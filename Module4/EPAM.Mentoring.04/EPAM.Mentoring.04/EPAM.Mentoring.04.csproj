@@ -48,8 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionToTakeWhenInputFileNameIsChanged.cs" />
-    <Compile Include="DirectoryCollection.cs" />
-    <Compile Include="FileSystemWatcherSettings.cs" />
+    <Compile Include="Configuration\DirectoryCollection.cs" />
+    <Compile Include="Configuration\FileSystemWatcherSettings.cs" />
+    <Compile Include="Interfaces\IWatcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource1.Designer.cs">
@@ -57,7 +58,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
-    <Compile Include="RuleCollection.cs" />
+    <Compile Include="Configuration\RuleCollection.cs" />
+    <Compile Include="Watcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

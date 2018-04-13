@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using LogAdapter;
 using NLog;
 using ILogger = LogAdapter.ILogger;
@@ -7,7 +8,7 @@ namespace LogProvider
 {
     public static class NLogProvider
     {
-        public static ILogger GetLogger(string className)
+        public static ILogger GetLogger(string className, CultureInfo defaultCultureInfo)
         {
             if (ReferenceEquals(className, null))
                 throw new ArgumentNullException($"{nameof(className)} is null.");
@@ -19,8 +20,10 @@ namespace LogProvider
 
             config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Info, logConsole));
             config.LoggingRules.Add(new NLog.Config.LoggingRule("*", LogLevel.Debug, logFile));
+            config.DefaultCultureInfo = defaultCultureInfo;
 
             LogManager.Configuration = config;
+
             var t = LogManager.GetLogger(className);
             return new NLoggerAdapter(t);
         }

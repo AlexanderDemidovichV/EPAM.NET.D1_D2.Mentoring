@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using EPAM.Mentoring.Interfaces;
 using LogAdapter;
@@ -18,6 +19,8 @@ namespace EPAM.Mentoring
         private readonly ILogger logger = NLogProvider.GetLogger("Pro",
             settings.CultureInfo);
 
+        private dynamic rules;
+
         public void StartListen()
         {
             logger.Info("Start application:");
@@ -27,7 +30,7 @@ namespace EPAM.Mentoring
             var directoryPathsToListen = from Directory directory in settings.Directories
                 select directory.Path;
 
-            var rules = (from Rule rule in settings.Rules
+            rules = (from Rule rule in settings.Rules
                 select new {
                     rule.FilePattern,
                     rule.DestinationFolder,
@@ -81,6 +84,42 @@ namespace EPAM.Mentoring
                 watcher.Error += OnError;
                 watcher.EnableRaisingEvents = true;
             }
+        }
+
+        private void CheckFilePattern(string fileName, string filePath)
+        {
+            if (rules == null) {
+                throw new ArgumentNullException(nameof(rules));
+            }
+            
+            foreach (Rule rule in rules)
+            {
+                if (Regex.IsMatch(filePath, rule.FilePattern))
+                    ModifyAndMoveFile(fileName, filePath, rule);
+            }
+        }
+
+        private void ModifyAndMoveFile(string fileName, string filePath, Rule rule)
+        {
+            string newFilePath = string.Empty;
+
+            switch (rule.ActionToTakeWhenInputFileNameIsChanged) {
+                case ActionToTakeWhenInputFileNameIsChanged.AddIndexNumber:
+                    newFilePath = filePath + "woof";
+                    File.Move(filePath, newFilePath);
+                    break;
+                case ActionToTakeWhenInputFileNameIsChanged.AddMoveDate:
+                    newFilePath = filePath + DateTimeOffset.Now;
+                    File.Move(filePath, newFilePath);
+                    break;
+            }
+
+            File.Move(newFilePath, rule.DestinationFolder + fileName);
+
+            //from = System.IO.Path.Combine(@"E:\vid\", "(" + i.ToString() + ").PNG");
+            //to = System.IO.Path.Combine(@"E:\ConvertedFiles\", i.ToString().PadLeft(6, '0') + ".png");
+
+            //File.Move(from, to); // Try to move
         }
     }
 }

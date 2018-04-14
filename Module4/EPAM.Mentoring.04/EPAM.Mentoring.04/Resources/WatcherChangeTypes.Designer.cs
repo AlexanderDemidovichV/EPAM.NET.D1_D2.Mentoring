@@ -22,14 +22,14 @@ namespace EPAM.Mentoring._04.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource1 {
+    internal class WatcherChangeTypes {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource1() {
+        internal WatcherChangeTypes() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EPAM.Mentoring._04.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EPAM.Mentoring._04.Resources.Resource1", typeof(Resource1).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EPAM.Mentoring._04.Resources.WatcherChangeTypes", typeof(WatcherChangeTypes).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,38 @@ namespace EPAM.Mentoring._04.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to english.
+        ///   Looks up a localized string similar to The change of a file or folder..
         /// </summary>
-        internal static string String1 {
+        internal static string Changed {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("Changed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The creation of a file or folder..
+        /// </summary>
+        internal static string Created {
+            get {
+                return ResourceManager.GetString("Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The deletion of a file or folder..
+        /// </summary>
+        internal static string Deleted {
+            get {
+                return ResourceManager.GetString("Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The renaming of a file or folder..
+        /// </summary>
+        internal static string Renamed {
+            get {
+                return ResourceManager.GetString("Renamed", resourceCulture);
             }
         }
     }

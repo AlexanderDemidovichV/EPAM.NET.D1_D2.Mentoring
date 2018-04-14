@@ -117,7 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="String1" xml:space="preserve">
-    <value>english</value>
+  <data name="Changed" xml:space="preserve">
+    <value>The change of a file or folder.</value>
+    <comment>The types of changes include: changes to size, attributes, security settings, last write, and last access time.</comment>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>The creation of a file or folder.</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>The deletion of a file or folder.</value>
+  </data>
+  <data name="Renamed" xml:space="preserve">
+    <value>The renaming of a file or folder.</value>
   </data>
 </root>

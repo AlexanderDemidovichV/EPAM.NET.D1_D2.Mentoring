@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using EPAM.Mentoring.Interfaces;
+using EPAM.Mentoring._04.Resources;
 using LogAdapter;
 using LogProvider;
 
@@ -16,14 +17,14 @@ namespace EPAM.Mentoring
         private static readonly FileSystemWatcherSettings settings =
             (FileSystemWatcherSettings)ConfigurationManager.GetSection("FileSystemWatcherSettings");
 
-        private readonly ILogger logger = NLogProvider.GetLogger("Pro",
+        private readonly ILogger logger = NLogProvider.GetLogger("NLog",
             settings.CultureInfo);
 
         private dynamic rules;
 
         public void StartListen()
         {
-            logger.Info("Start application:");
+            logger.Info(Messages.StartApplication);
 
             Thread.CurrentThread.CurrentUICulture = settings.CultureInfo;
 
@@ -34,35 +35,51 @@ namespace EPAM.Mentoring
                 select new {
                     rule.FilePattern,
                     rule.DestinationFolder,
-                    rule.ActionToTakeWhenInputFileNameIsChanged
+                    rule.ActionToTakeWhenInputFileNameIsChanged,
+                    Counter = 0
                 }).ToList();
+
+            if (rules == null || directoryPathsToListen == null) {
+                throw new ArgumentNullException(nameof(rules));
+            }
 
             InitWatchers(directoryPathsToListen);
         }
 
         public void OnChanged(object source, FileSystemEventArgs e)
         {
-            Console.WriteLine("Name: " + Environment.NewLine + e.Name + " Full Path: " + e.FullPath + " | " + e.ChangeType);
+            FindRule(e);
         }
 
         public void OnCreated(object source, FileSystemEventArgs e)
         {
-            Console.WriteLine("Name: " + Environment.NewLine + e.Name + " Full Path: " + e.FullPath + " | " + e.ChangeType);
+            FindRule(e);
         }
 
         public void OnDelete(object source, FileSystemEventArgs e)
         {
-            Console.WriteLine("Name: " + Environment.NewLine + e.Name + " Full Path: " + e.FullPath + " | " + e.ChangeType);
+            FindRule(e);
         }
 
         public void OnRenamed(object source, RenamedEventArgs e)
         {
-            Console.WriteLine("Name: {0} " + Environment.NewLine + "renamed to {1}", e.OldFullPath, e.FullPath);
+            FindRule(e);
+        }
+
+        private void FindRule(FileSystemEventArgs e)
+        {
+            logger.Info(Messages.Found + Messages.FileName + e.Name);
+
+            if (!CheckRules(e.FullPath))
+                UseDefaultRule(e.FullPath);
+
+            logger.Info(Messages.FileName + Environment.NewLine + e.Name +
+                        Messages.FullPath + e.FullPath + Messages.Delimiter + e.ChangeType);
         }
 
         public void OnError(object source, ErrorEventArgs e)
         {
-            Console.WriteLine("Error was occured: " + e.GetException().Message + Environment.NewLine +
+            logger.Error(Messages.ErrorHasOccurred + e.GetException().Message + Environment.NewLine +
                 e.GetException().StackTrace + Environment.NewLine +
                 e.GetException().InnerException.Message + Environment.NewLine +
                 e.GetException().InnerException.StackTrace);
@@ -75,7 +92,7 @@ namespace EPAM.Mentoring
                     Path = directoryPath,
                     NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite
                                    | NotifyFilters.FileName | NotifyFilters.DirectoryName,
-                    Filter = "*.*"
+                    Filter = "*"
                 };
                 watcher.Changed += OnChanged;
                 watcher.Created += OnCreated;
@@ -86,26 +103,33 @@ namespace EPAM.Mentoring
             }
         }
 
-        private void CheckFilePattern(string fileName, string filePath)
+        private bool CheckRules(string filePath)
         {
-            if (rules == null) {
-                throw new ArgumentNullException(nameof(rules));
+            foreach (var rule in rules) {
+                if (Regex.IsMatch(filePath, rule.FilePattern)){
+                    ModifyAndMoveFile(filePath, rule);
+                    return true;
+                }
             }
-            
-            foreach (Rule rule in rules)
-            {
-                if (Regex.IsMatch(filePath, rule.FilePattern))
-                    ModifyAndMoveFile(fileName, filePath, rule);
-            }
+            return false;
         }
 
-        private void ModifyAndMoveFile(string fileName, string filePath, Rule rule)
+        private void UseDefaultRule(string filePath)
         {
-            string newFilePath = string.Empty;
+            ModifyAndMoveFile(filePath, new {
+                FilePattern = "*",
+                DestinationFolder = "",
+                ActionToTakeWhenInputFileNameIsChanged = ActionToTakeWhenInputFileNameIsChanged.AddMoveDate
+            });
+        }
+
+        private void ModifyAndMoveFile(string filePath, dynamic rule)
+        {
+            string newFilePath = filePath;
 
             switch (rule.ActionToTakeWhenInputFileNameIsChanged) {
                 case ActionToTakeWhenInputFileNameIsChanged.AddIndexNumber:
-                    newFilePath = filePath + "woof";
+                    newFilePath = filePath + rule.Counter++;
                     File.Move(filePath, newFilePath);
                     break;
                 case ActionToTakeWhenInputFileNameIsChanged.AddMoveDate:
@@ -114,12 +138,10 @@ namespace EPAM.Mentoring
                     break;
             }
 
-            File.Move(newFilePath, rule.DestinationFolder + fileName);
+            File.Move(newFilePath, rule.DestinationFolder + newFilePath);
 
-            //from = System.IO.Path.Combine(@"E:\vid\", "(" + i.ToString() + ").PNG");
-            //to = System.IO.Path.Combine(@"E:\ConvertedFiles\", i.ToString().PadLeft(6, '0') + ".png");
-
-            //File.Move(from, to); // Try to move
+            logger.Info(Messages.FileName + $"{newFilePath}" +
+                        string.Format(Messages.MoveTo, rule.DestinationFolder + newFilePath));
         }
     }
 }

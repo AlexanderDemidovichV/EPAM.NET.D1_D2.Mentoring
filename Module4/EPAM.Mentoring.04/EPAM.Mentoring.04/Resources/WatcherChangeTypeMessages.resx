@@ -117,34 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FileName" xml:space="preserve">
-    <value>File name: </value>
+  <data name="Changed" xml:space="preserve">
+    <value>The change of a file or folder.</value>
+    <comment>The types of changes include: changes to size, attributes, security settings, last write, and last access time.</comment>
   </data>
-  <data name="FullPath" xml:space="preserve">
-    <value> Full path: </value>
+  <data name="Created" xml:space="preserve">
+    <value>The creation of a file or folder.</value>
   </data>
-  <data name="StartApplication" xml:space="preserve">
-    <value>Application started</value>
+  <data name="Deleted" xml:space="preserve">
+    <value>The deletion of a file or folder.</value>
   </data>
-  <data name="OnRenamedTo" xml:space="preserve">
-    <value>renamed to {0}</value>
+  <data name="NotSupported" xml:space="preserve">
+    <value>Not supported</value>
   </data>
-  <data name="Delimiter" xml:space="preserve">
-    <value> | </value>
-  </data>
-  <data name="ErrorHasOccurred" xml:space="preserve">
-    <value>Error has occurred: </value>
-  </data>
-  <data name="Found" xml:space="preserve">
-    <value>Found: </value>
-  </data>
-  <data name="MoveTo" xml:space="preserve">
-    <value> move to {0}</value>
-  </data>
-  <data name="ExitMessage" xml:space="preserve">
-    <value>Press 'Ctrl+C' to quit.</value>
-  </data>
-  <data name="TypeInitializationProblems" xml:space="preserve">
-    <value>Type initialization problems</value>
+  <data name="Renamed" xml:space="preserve">
+    <value>The renaming of a file or folder.</value>
   </data>
 </root>

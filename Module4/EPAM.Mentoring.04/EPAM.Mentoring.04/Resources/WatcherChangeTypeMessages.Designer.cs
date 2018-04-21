@@ -22,14 +22,14 @@ namespace EPAM.Mentoring._04.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Messages {
+    internal class WatcherChangeTypeMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Messages() {
+        internal WatcherChangeTypeMessages() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace EPAM.Mentoring._04.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EPAM.Mentoring._04.Resources.Messages", typeof(Messages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EPAM.Mentoring._04.Resources.WatcherChangeTypeMessages", typeof(WatcherChangeTypeMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,47 @@ namespace EPAM.Mentoring._04.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  | .
+        ///   Looks up a localized string similar to The change of a file or folder..
         /// </summary>
-        internal static string Delimiter {
+        internal static string Changed {
             get {
-                return ResourceManager.GetString("Delimiter", resourceCulture);
+                return ResourceManager.GetString("Changed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error has occurred: .
+        ///   Looks up a localized string similar to The creation of a file or folder..
         /// </summary>
-        internal static string ErrorHasOccurred {
+        internal static string Created {
             get {
-                return ResourceManager.GetString("ErrorHasOccurred", resourceCulture);
+                return ResourceManager.GetString("Created", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Press &apos;Ctrl+C&apos; to quit..
+        ///   Looks up a localized string similar to The deletion of a file or folder..
         /// </summary>
-        internal static string ExitMessage {
+        internal static string Deleted {
             get {
-                return ResourceManager.GetString("ExitMessage", resourceCulture);
+                return ResourceManager.GetString("Deleted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File name: .
+        ///   Looks up a localized string similar to Not supported.
         /// </summary>
-        internal static string FileName {
+        internal static string NotSupported {
             get {
-                return ResourceManager.GetString("FileName", resourceCulture);
+                return ResourceManager.GetString("NotSupported", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Found: .
+        ///   Looks up a localized string similar to The renaming of a file or folder..
         /// </summary>
-        internal static string Found {
+        internal static string Renamed {
             get {
-                return ResourceManager.GetString("Found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  Full path: .
-        /// </summary>
-        internal static string FullPath {
-            get {
-                return ResourceManager.GetString("FullPath", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to  move to {0}.
-        /// </summary>
-        internal static string MoveTo {
-            get {
-                return ResourceManager.GetString("MoveTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to renamed to {0}.
-        /// </summary>
-        internal static string OnRenamedTo {
-            get {
-                return ResourceManager.GetString("OnRenamedTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Application started.
-        /// </summary>
-        internal static string StartApplication {
-            get {
-                return ResourceManager.GetString("StartApplication", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type initialization problems.
-        /// </summary>
-        internal static string TypeInitializationProblems {
-            get {
-                return ResourceManager.GetString("TypeInitializationProblems", resourceCulture);
+                return ResourceManager.GetString("Renamed", resourceCulture);
             }
         }
     }

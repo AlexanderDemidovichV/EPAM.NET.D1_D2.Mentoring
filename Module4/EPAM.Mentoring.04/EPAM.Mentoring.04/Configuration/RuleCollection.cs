@@ -29,7 +29,5 @@ namespace EPAM.Mentoring
             (ActionToTakeWhenInputFileNameIsChanged)Enum.Parse(
                 typeof(ActionToTakeWhenInputFileNameIsChanged),
                 base["ActionToTakeWhenInputFileNameIsChanged"].ToString());
-
-        public int Counter { get; set; }
     }
 }

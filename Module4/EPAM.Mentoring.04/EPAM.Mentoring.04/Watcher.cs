@@ -5,15 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using EPAM.Mentoring.Interfaces;
+using EPAM.Mentoring.Exceptions;
 using EPAM.Mentoring.Models;
 using EPAM.Mentoring._04.Resources;
 using LogAdapter;
 using LogProvider;
+using WatcherChangeTypes = System.IO.WatcherChangeTypes;
 
 namespace EPAM.Mentoring
 {
-    public class Watcher: IWatcher
+    public class Watcher
     {
         private static readonly FileSystemWatcherSettings settings =
             (FileSystemWatcherSettings)ConfigurationManager.
@@ -42,8 +43,6 @@ namespace EPAM.Mentoring
                     Counter = 0
                 }).ToList();
 
-            //ValidateSettings(directoryPathsToListen);
-
             InitWatchers(directoryPathsToListen);
         }
 
@@ -51,19 +50,33 @@ namespace EPAM.Mentoring
         {
             logger.Info(Messages.Found + Messages.FileName + e.Name);
 
-            if (!CheckRules(e.FullPath))
-                UseDefaultRule(e.FullPath);
+            try
+            {
+                if (!CheckRules(e.FullPath))
+                    UseDefaultRule(e.FullPath);
+            }
+            catch (IOException ex)
+            {
+                logger.Fatal(Messages.ErrorHasOccurred + ex.Message +
+                     Environment.NewLine + ex.StackTrace);
+                throw new FileSystemWatcherException(Messages.ErrorHasOccurred, ex);
+            }
+            catch (ArgumentException ex)
+            {
+                logger.Fatal(Messages.ErrorHasOccurred + ex.Message +
+                    Environment.NewLine + ex.StackTrace);
+                throw new FileSystemWatcherException(Messages.ErrorHasOccurred, ex);
+            }
 
-            logger.Info(Messages.FileName + Environment.NewLine + e.Name +
-                        Messages.FullPath + e.FullPath + Messages.Delimiter + e.ChangeType);
+            logger.Info(Messages.FileName + e.Name + Messages.FullPath + 
+                e.FullPath + Messages.Delimiter + 
+                GetChangeTypeMessage(e.ChangeType));
         }
 
         public void OnError(object source, ErrorEventArgs e)
         {
-            logger.Error(Messages.ErrorHasOccurred + e.GetException().Message + Environment.NewLine +
-                         e.GetException().StackTrace + Environment.NewLine +
-                         e.GetException().InnerException.Message + Environment.NewLine +
-                         e.GetException().InnerException.StackTrace);
+            logger.Error(Messages.ErrorHasOccurred + e.GetException().Message + 
+                Environment.NewLine + e.GetException().StackTrace);
         }
 
         private void InitWatchers(IEnumerable<string> directoryPathsToListen)
@@ -74,7 +87,6 @@ namespace EPAM.Mentoring
                     NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite
                                    | NotifyFilters.FileName | NotifyFilters.DirectoryName
                 };
-                watcher.Changed += OnFileSystemEvent;
                 watcher.Created += OnFileSystemEvent;
                 watcher.Renamed += OnFileSystemEvent;
                 watcher.Error += OnError;
@@ -110,19 +122,32 @@ namespace EPAM.Mentoring
             switch (rule.ActionToTakeWhenInputFileNameIsChanged) {
                 case ActionToTakeWhenInputFileNameIsChanged.AddIndexNumber:
                     newFilePath = rule.DestinationFolder + "\\" + 
-                        Path.GetFileNameWithoutExtension(filePath) + 
+                        Path.GetFileNameWithoutExtension(filePath) + " " +
                         ++rule.Counter + Path.GetExtension(filePath);
                     break;
                 case ActionToTakeWhenInputFileNameIsChanged.AddMoveDate:
-                    newFilePath = Path.GetDirectoryName(rule.DestinationFolder) + 
-                        "\\" + Path.GetFileNameWithoutExtension(filePath) + 
-                        DateTimeOffset.Now + Path.GetExtension(filePath);
+                    newFilePath = rule.DestinationFolder + 
+                        "\\" + Path.GetFileNameWithoutExtension(filePath) + " " +
+                        DateTimeOffset.Now.ToString("yy-MM-dd-hh,mm,ss") + 
+                        Path.GetExtension(filePath);
                     break;
             }
             File.Move(filePath, newFilePath);
 
             logger.Info(Messages.FileName + $"{newFilePath}" +
-                string.Format(Messages.MoveTo, rule.DestinationFolder + newFilePath));
+                string.Format(Messages.MoveTo, newFilePath));
+        }
+
+        private string GetChangeTypeMessage(WatcherChangeTypes changeType)
+        {
+            switch (changeType) {
+                case WatcherChangeTypes.Created:
+                    return WatcherChangeTypeMessages.Created;
+                case WatcherChangeTypes.Renamed:
+                    return WatcherChangeTypeMessages.Renamed;
+                default:
+                    return WatcherChangeTypeMessages.NotSupported;
+            }
         }
     }
 }

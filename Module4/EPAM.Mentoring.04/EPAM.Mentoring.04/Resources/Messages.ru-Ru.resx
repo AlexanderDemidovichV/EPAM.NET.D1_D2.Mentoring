@@ -124,7 +124,7 @@
     <value>Ошибка возникла: </value>
   </data>
   <data name="ExitMessage" xml:space="preserve">
-    <value>Нажмите \'Ctrl+C\' для выхода.</value>
+    <value>Нажмите 'Ctrl+C' для выхода.</value>
   </data>
   <data name="FileName" xml:space="preserve">
     <value>Название: </value>

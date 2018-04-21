@@ -51,7 +51,6 @@
     <Compile Include="Configuration\DirectoryCollection.cs" />
     <Compile Include="Configuration\FileSystemWatcherSettings.cs" />
     <Compile Include="Exceptions\FileSystemWatcherException.cs" />
-    <Compile Include="Interfaces\IWatcher.cs" />
     <Compile Include="Models\Rule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,10 +60,10 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="Configuration\RuleCollection.cs" />
-    <Compile Include="Resources\WatcherChangeTypes.Designer.cs">
+    <Compile Include="Resources\WatcherChangeTypeMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WatcherChangeTypes.resx</DependentUpon>
+      <DependentUpon>WatcherChangeTypeMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Watcher.cs" />
   </ItemGroup>
@@ -82,11 +81,11 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Messages.ru-Ru.resx" />
-    <EmbeddedResource Include="Resources\WatcherChangeTypes.resx">
+    <EmbeddedResource Include="Resources\WatcherChangeTypeMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>WatcherChangeTypes.Designer.cs</LastGenOutput>
+      <LastGenOutput>WatcherChangeTypeMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\WatcherChangeTypes.ru-RU.resx" />
+    <EmbeddedResource Include="Resources\WatcherChangeTypeMessages.ru-RU.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogAdapter\LogAdapter.csproj">

@@ -15,29 +15,11 @@ namespace LogAdapter
             this.logger = logger;
         }
 
-        public void Trace(string message) => logger.Trace(message);
-
-        public void Trace(Exception exception, string message, params object[] args) => logger.Trace(exception, message, args);
-
-        public void Trace(string message, params object[] args) => logger.Trace(message, args);
-
-        public void Debug(string message) => logger.Debug(message);
-
-        public void Debug(Exception exception, string message, params object[] args) => logger.Debug(exception, message, args);
-
-        public void Debug(string message, params object[] args) => logger.Debug(message, args);
-
         public void Info(string message) => logger.Info(message);
 
         public void Info(Exception exception, string message, params object[] args) => logger.Info(exception, message, args);
 
         public void Info(string message, params object[] args) => logger.Info(message, args);
-
-        public void Warn(string message) => logger.Warn(message);
-
-        public void Warn(Exception exception, string message, params object[] args) => logger.Warn(exception, message, args);
-
-        public void Warn(string message, params object[] args) => logger.Warn(message, args);
 
         public void Error(string message) => logger.Error(message);
 

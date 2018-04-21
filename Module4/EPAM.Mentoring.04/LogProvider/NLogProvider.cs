@@ -24,8 +24,8 @@ namespace LogProvider
 
             LogManager.Configuration = config;
 
-            var t = LogManager.GetLogger(className);
-            return new NLoggerAdapter(t);
+            var logger = LogManager.GetLogger(className);
+            return new NLoggerAdapter(logger);
         }
 
         public static void Flush() => LogManager.Flush();

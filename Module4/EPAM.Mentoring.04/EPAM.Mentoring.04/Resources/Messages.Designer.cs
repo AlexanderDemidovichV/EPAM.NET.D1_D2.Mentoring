@@ -79,6 +79,15 @@ namespace EPAM.Mentoring._04.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press \&apos;Ctrl+C\&apos; to quit..
+        /// </summary>
+        internal static string ExitMessage {
+            get {
+                return ResourceManager.GetString("ExitMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File name: .
         /// </summary>
         internal static string FileName {
@@ -106,7 +115,7 @@ namespace EPAM.Mentoring._04.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Move to {0}.
+        ///   Looks up a localized string similar to  move to {0}.
         /// </summary>
         internal static string MoveTo {
             get {
@@ -129,6 +138,15 @@ namespace EPAM.Mentoring._04.Resources {
         internal static string StartApplication {
             get {
                 return ResourceManager.GetString("StartApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type initialization problems.
+        /// </summary>
+        internal static string TypeInitializationProblems {
+            get {
+                return ResourceManager.GetString("TypeInitializationProblems", resourceCulture);
             }
         }
     }

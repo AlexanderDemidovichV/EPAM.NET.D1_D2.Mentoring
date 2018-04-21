@@ -139,6 +139,12 @@
     <value>Found: </value>
   </data>
   <data name="MoveTo" xml:space="preserve">
-    <value>Move to {0}</value>
+    <value> move to {0}</value>
+  </data>
+  <data name="ExitMessage" xml:space="preserve">
+    <value>Press \'Ctrl+C\' to quit.</value>
+  </data>
+  <data name="TypeInitializationProblems" xml:space="preserve">
+    <value>Type initialization problems</value>
   </data>
 </root>

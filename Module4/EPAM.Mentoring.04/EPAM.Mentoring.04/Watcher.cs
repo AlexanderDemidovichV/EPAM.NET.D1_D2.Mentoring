@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using EPAM.Mentoring.Interfaces;
+using EPAM.Mentoring.Models;
 using EPAM.Mentoring._04.Resources;
 using LogAdapter;
 using LogProvider;
@@ -15,58 +16,38 @@ namespace EPAM.Mentoring
     public class Watcher: IWatcher
     {
         private static readonly FileSystemWatcherSettings settings =
-            (FileSystemWatcherSettings)ConfigurationManager.GetSection("FileSystemWatcherSettings");
+            (FileSystemWatcherSettings)ConfigurationManager.
+            GetSection("FileSystemWatcherSettings");
 
         private readonly ILogger logger = NLogProvider.GetLogger("NLog",
             settings.CultureInfo);
 
-        private dynamic rules;
+        private List<RuleModel> rules;
 
         public void StartListen()
         {
-            logger.Info(Messages.StartApplication);
-
             Thread.CurrentThread.CurrentUICulture = settings.CultureInfo;
+
+            logger.Info(Messages.StartApplication);
 
             var directoryPathsToListen = from Directory directory in settings.Directories
                 select directory.Path;
 
             rules = (from Rule rule in settings.Rules
-                select new {
-                    rule.FilePattern,
-                    rule.DestinationFolder,
-                    rule.ActionToTakeWhenInputFileNameIsChanged,
+                select new RuleModel {
+                    FilePattern = rule.FilePattern,
+                    DestinationFolder = rule.DestinationFolder,
+                    ActionToTakeWhenInputFileNameIsChanged = 
+                        rule.ActionToTakeWhenInputFileNameIsChanged,
                     Counter = 0
                 }).ToList();
 
-            if (rules == null || directoryPathsToListen == null) {
-                throw new ArgumentNullException(nameof(rules));
-            }
+            //ValidateSettings(directoryPathsToListen);
 
             InitWatchers(directoryPathsToListen);
         }
 
-        public void OnChanged(object source, FileSystemEventArgs e)
-        {
-            FindRule(e);
-        }
-
-        public void OnCreated(object source, FileSystemEventArgs e)
-        {
-            FindRule(e);
-        }
-
-        public void OnDelete(object source, FileSystemEventArgs e)
-        {
-            FindRule(e);
-        }
-
-        public void OnRenamed(object source, RenamedEventArgs e)
-        {
-            FindRule(e);
-        }
-
-        private void FindRule(FileSystemEventArgs e)
+        public void OnFileSystemEvent(object source, FileSystemEventArgs e)
         {
             logger.Info(Messages.Found + Messages.FileName + e.Name);
 
@@ -80,24 +61,22 @@ namespace EPAM.Mentoring
         public void OnError(object source, ErrorEventArgs e)
         {
             logger.Error(Messages.ErrorHasOccurred + e.GetException().Message + Environment.NewLine +
-                e.GetException().StackTrace + Environment.NewLine +
-                e.GetException().InnerException.Message + Environment.NewLine +
-                e.GetException().InnerException.StackTrace);
+                         e.GetException().StackTrace + Environment.NewLine +
+                         e.GetException().InnerException.Message + Environment.NewLine +
+                         e.GetException().InnerException.StackTrace);
         }
 
         private void InitWatchers(IEnumerable<string> directoryPathsToListen)
         {
             foreach (var directoryPath in directoryPathsToListen) {
                 var watcher = new FileSystemWatcher {
-                    Path = directoryPath,
+                    Path = Path.GetFullPath(directoryPath),
                     NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite
-                                   | NotifyFilters.FileName | NotifyFilters.DirectoryName,
-                    Filter = "*"
+                                   | NotifyFilters.FileName | NotifyFilters.DirectoryName
                 };
-                watcher.Changed += OnChanged;
-                watcher.Created += OnCreated;
-                watcher.Deleted += OnDelete;
-                watcher.Renamed += OnRenamed;
+                watcher.Changed += OnFileSystemEvent;
+                watcher.Created += OnFileSystemEvent;
+                watcher.Renamed += OnFileSystemEvent;
                 watcher.Error += OnError;
                 watcher.EnableRaisingEvents = true;
             }
@@ -106,7 +85,7 @@ namespace EPAM.Mentoring
         private bool CheckRules(string filePath)
         {
             foreach (var rule in rules) {
-                if (Regex.IsMatch(filePath, rule.FilePattern)){
+                if (Regex.IsMatch(Path.GetFileName(filePath), rule.FilePattern)){
                     ModifyAndMoveFile(filePath, rule);
                     return true;
                 }
@@ -116,32 +95,34 @@ namespace EPAM.Mentoring
 
         private void UseDefaultRule(string filePath)
         {
-            ModifyAndMoveFile(filePath, new {
-                FilePattern = "*",
-                DestinationFolder = "",
-                ActionToTakeWhenInputFileNameIsChanged = ActionToTakeWhenInputFileNameIsChanged.AddMoveDate
+            ModifyAndMoveFile(filePath, new RuleModel {
+                FilePattern = ".*?",
+                DestinationFolder = "c:\\default",
+                ActionToTakeWhenInputFileNameIsChanged =
+                    ActionToTakeWhenInputFileNameIsChanged.AddMoveDate
             });
         }
 
-        private void ModifyAndMoveFile(string filePath, dynamic rule)
+        private void ModifyAndMoveFile(string filePath, RuleModel rule)
         {
             string newFilePath = filePath;
 
             switch (rule.ActionToTakeWhenInputFileNameIsChanged) {
                 case ActionToTakeWhenInputFileNameIsChanged.AddIndexNumber:
-                    newFilePath = filePath + rule.Counter++;
-                    File.Move(filePath, newFilePath);
+                    newFilePath = rule.DestinationFolder + "\\" + 
+                        Path.GetFileNameWithoutExtension(filePath) + 
+                        ++rule.Counter + Path.GetExtension(filePath);
                     break;
                 case ActionToTakeWhenInputFileNameIsChanged.AddMoveDate:
-                    newFilePath = filePath + DateTimeOffset.Now;
-                    File.Move(filePath, newFilePath);
+                    newFilePath = Path.GetDirectoryName(rule.DestinationFolder) + 
+                        "\\" + Path.GetFileNameWithoutExtension(filePath) + 
+                        DateTimeOffset.Now + Path.GetExtension(filePath);
                     break;
             }
-
-            File.Move(newFilePath, rule.DestinationFolder + newFilePath);
+            File.Move(filePath, newFilePath);
 
             logger.Info(Messages.FileName + $"{newFilePath}" +
-                        string.Format(Messages.MoveTo, rule.DestinationFolder + newFilePath));
+                string.Format(Messages.MoveTo, rule.DestinationFolder + newFilePath));
         }
     }
 }

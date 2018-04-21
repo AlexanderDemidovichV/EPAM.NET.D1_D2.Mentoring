@@ -20,7 +20,6 @@ namespace EPAM.Mentoring
     public class Directory : ConfigurationElement
     {
         [ConfigurationProperty("Path", IsRequired = true, IsKey = true)]
-        [RegexStringValidator(@"^(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*\w([\w.])+$")]
         public string Path => (string)base["Path"];
     }
 }

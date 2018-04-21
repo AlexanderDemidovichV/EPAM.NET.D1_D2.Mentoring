@@ -1,5 +1,6 @@
 ﻿using System;
-using System.IO;
+using EPAM.Mentoring.Exceptions;
+using EPAM.Mentoring._04.Resources;
 
 namespace EPAM.Mentoring
 {
@@ -7,11 +8,19 @@ namespace EPAM.Mentoring
     {
         static void Main(string[] args)
         {
-            var t = new Watcher();
-            t.StartListen();
-            // Wait for the user to quit the program.
-            Console.WriteLine("Press \'q\' to quit the sample.");
-            while (Console.Read() != 'q') ;
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+                e.Cancel = true;
+            };
+
+            try {
+                var watcher = new Watcher();
+                watcher.StartListen();
+            } catch (TypeInitializationException e) {
+                throw new FileSystemWatcherException(Messages.TypeInitializationProblems, e);
+            } finally {
+                Console.WriteLine(Messages.ExitMessage);
+                Console.ReadLine();
+            }
         }
     }
 }

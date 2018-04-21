@@ -123,6 +123,9 @@
   <data name="ErrorHasOccurred" xml:space="preserve">
     <value>Ошибка возникла: </value>
   </data>
+  <data name="ExitMessage" xml:space="preserve">
+    <value>Нажмите \'Ctrl+C\' для выхода.</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>Название: </value>
   </data>
@@ -133,12 +136,15 @@
     <value> Полный путь: </value>
   </data>
   <data name="MoveTo" xml:space="preserve">
-    <value>перемещен в {0}</value>
+    <value> перемещен в {0}</value>
   </data>
   <data name="OnRenamedTo" xml:space="preserve">
     <value>переименован в {0}</value>
   </data>
   <data name="StartApplication" xml:space="preserve">
     <value>Приложение начало работу</value>
+  </data>
+  <data name="TypeInitializationProblems" xml:space="preserve">
+    <value>Проблемы с инициализацией стартовых настройк</value>
   </data>
 </root>

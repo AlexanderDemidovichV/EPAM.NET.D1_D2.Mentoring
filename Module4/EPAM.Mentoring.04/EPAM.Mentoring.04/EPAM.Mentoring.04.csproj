@@ -50,7 +50,9 @@
     <Compile Include="ActionToTakeWhenInputFileNameIsChanged.cs" />
     <Compile Include="Configuration\DirectoryCollection.cs" />
     <Compile Include="Configuration\FileSystemWatcherSettings.cs" />
+    <Compile Include="Exceptions\FileSystemWatcherException.cs" />
     <Compile Include="Interfaces\IWatcher.cs" />
+    <Compile Include="Models\Rule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Messages.Designer.cs">

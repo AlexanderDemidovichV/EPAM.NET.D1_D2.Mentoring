@@ -11,7 +11,6 @@ SELECT
 	CASE
 		WHEN ShippedDate IS NULL
 		THEN 'Not Shipped'
-		ELSE CAST(Orders.ShippedDate AS NVARCHAR)
 	END AS ShippedDate
 FROM Orders
 WHERE ShippedDate IS NULL;
@@ -30,27 +29,26 @@ WHERE
 	ShippedDate >= '05-07-1998' OR
 	ShippedDate IS NULL;
 
-
 --1.2.1
 
 SELECT 
-	CompanyName,
+	ContactName,
 	Country
 FROM Customers
 WHERE Country IN ('USA', 'Canada')
 ORDER BY 
-	CompanyName,
+	ContactName,
 	Country;
 
 --1.2.2
 
 SELECT
-	CompanyName,
+	ContactName,
 	Country
 FROM Customers
 WHERE
 	Country NOT IN ('USA', 'Canada')
-ORDER BY CompanyName;
+ORDER BY ContactName;
 
 --1.2.3
 
@@ -62,7 +60,8 @@ ORDER BY Country DESC;
 --1.3.1
 
 SELECT DISTINCT
-	OrderID
+	OrderID,
+	Quantity
 FROM [Order Details]
 WHERE Quantity BETWEEN 3 AND 10;
 
@@ -93,12 +92,12 @@ SELECT
 	ProductName
 FROM Products
 WHERE 
-	ProductName LIKE '%cho%olade%';
+	ProductName LIKE '%cho_olade%';
 
 --2.1.1
 
 SELECT
-	SUM(O.UnitPrice * O.Quantity * O.Discount) AS Totals
+	SUM(O.UnitPrice * O.Quantity * (1 - O.Discount)) AS Totals
 FROM [Order Details] AS O;
 
 --2.1.2
@@ -116,21 +115,23 @@ FROM Orders;
 --2.2.1
 
 SELECT
-	YEAR(OrderDate) AS [Year],
-	COUNT(YEAR(OrderDate))
+	YEAR(OrderDate) AS YEAR,
+	COUNT(OrderID) AS Total
 FROM Orders
 GROUP BY YEAR(OrderDate);
+
+GO
 
 SELECT COUNT(*) FROM Orders;
 
 --2.2.2
 
 SELECT 
-	(Employees.LastName + ', ' + Employees.FirstName) AS Seller,  
-	COUNT(Employees.LastName + ', ' + Employees.FirstName) AS Amount
-FROM Orders
-LEFT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID
-GROUP BY (Employees.LastName + ', ' + Employees.FirstName)
+	(E.LastName + ', ' + E.FirstName) AS Seller,  
+	COUNT(E.LastName + ', ' + E.FirstName) AS Amount
+FROM Orders AS O
+LEFT JOIN Employees AS E ON O.EmployeeID = E.EmployeeID
+GROUP BY (E.LastName + ', ' + E.FirstName)
 ORDER BY Amount DESC;
 
 --2.2.3
@@ -140,14 +141,13 @@ ORDER BY Amount DESC;
 SELECT 
 	 EmployeeID,
 	 CustomerID,
-	 COUNT(CustomerID) AS [Amount of purchases]
+	 COUNT(OrderId) AS [Amount of purchases]
 FROM Orders
+WHERE 
+Orders.OrderDate >= '01-01-1998' AND Orders.OrderDate < '01-01-1999'
 GROUP BY 
 	 EmployeeID,
-	 CustomerID,
-	 OrderDate
-HAVING 
-	Orders.OrderDate >= '01-01-1998' AND Orders.OrderDate < '01-01-1999';
+	 CustomerID;
 
 -- 2.2.4
 -- Найти покупателей и продавцов, которые живут в одном городе. 
@@ -155,16 +155,11 @@ HAVING
 -- то информация о таких покупателя и продавцах не должна попадать в результирующий набор. Не использовать конструкцию JOIN. 
 --
 SELECT
-	C.CompanyName,
+	C.ContactName,
 	(E.LastName + ', ' + E.FirstName) AS EmployeeName,
 	C.City	
 FROM Customers AS C, Employees AS E 
-GROUP BY 
-	C.CompanyName,
-	(E.LastName + ', ' + E.FirstName),
-	C.City,
-	E.City
-HAVING C.City = E.City; 
+WHERE C.City = E.City; 
 
 -- 2.2.5
 -- Найти всех покупателей, которые живут в одном городе. 
@@ -181,26 +176,32 @@ ORDER BY COUNT(CompanyName) DESC;
 -- По таблице Employees найти для каждого продавца его руководителя.
 
 SELECT 
-	E.ReportsTo AS ReportsTo
-FROM Employees AS E
-GROUP BY ReportsTo
-HAVING ReportsTo IS NOT NULL;
+       E1.FirstName + ', ' + E1.LastName AS 'EmployeeName',
+       CASE 
+       WHEN E2.FirstName + ', ' + E2.LastName IS NULL 
+         THEN 'Godfather'
+       ELSE E2.FirstName + ', ' + E2.LastName
+	   END AS 'Report to'
+FROM Employees AS E1
+LEFT JOIN Employees AS E2
+ON E2.EmployeeID = E1.ReportsTo;
 
 -- 2.3.1
 -- Определить продавцов, которые обслуживают регион 'Western' (таблица Region). 
 
 SELECT
-	Employees.FirstName,
-	Employees.LastName,
-	Region.RegionDescription
-FROM Employees
-INNER JOIN EmployeeTerritories ON EmployeeTerritories.EmployeeID = Employees.EmployeeID
-INNER JOIN Territories ON Territories.TerritoryID = EmployeeTerritories.TerritoryID 
-INNER JOIN Region ON Territories.RegionID = Region.RegionID AND RegionDescription = 'Western'
+	E.FirstName,
+	E.LastName,
+	R.RegionDescription
+FROM Employees AS E
+JOIN EmployeeTerritories AS ET ON ET.EmployeeID = E.EmployeeID
+JOIN Territories AS T ON T.TerritoryID = ET.TerritoryID 
+JOIN Region AS R ON T.RegionID = R.RegionID AND RegionDescription = 'Western'
 GROUP BY
-	Employees.FirstName,
-	Employees.LastName,
-	Region.RegionDescription;
+	E.FirstName,
+	E.LastName,
+	R.RegionDescription;
+
 
 -- 2.3.2
 
@@ -209,13 +210,13 @@ GROUP BY
 -- результаты запроса по возрастанию количества заказов.
 
 SELECT
-	Customers.CompanyName,
-	COUNT(Orders.OrderID) AS [Amount of orders]
-FROM Customers
-LEFT JOIN Orders ON Orders.CustomerID = Customers.CustomerID
+	C.CompanyName,
+	COUNT(O.OrderID) AS [Amount of orders]
+FROM Customers AS C
+LEFT JOIN Orders AS O ON O.CustomerID = C.CustomerID
 GROUP BY 
-	Customers.CompanyName
-ORDER BY COUNT(Orders.OrderID);
+	C.CompanyName
+ORDER BY [Amount of orders];
 
 -- 2.4.1
 
@@ -255,33 +256,9 @@ WHERE EmployeeID IN
 SELECT 
 	Customers.CompanyName
 FROM Customers
-WHERE EXISTS
+WHERE NOT EXISTS
 	(SELECT
-		*
+		CustomerID
 	FROM Orders
 	WHERE Orders.CustomerID = Customers.CustomerID);
 
--- 3
-
--- 1.0 -> 1.1
-
-CREATE TABLE CreditCard   
-(  
-    CreditCardID INT IDENTITY(1,1) NOT NULL, 
-	CreditCardNumber NVARCHAR(12) NOT NULL,
-    ExpiryDate DATETIME NOT NULL,   
-    HolderLastName NVARCHAR(20) NOT NULL,
-	HolderFirstName NVARCHAR(10) NOT NULL,
-	HolderID INT NULL
-);  
-
-ALTER TABLE CreditCard  WITH NOCHECK ADD  CONSTRAINT FK_CreditCard_Employee FOREIGN KEY(HolderID)
-REFERENCES Employees (EmployeeID);
-GO
-
--- 1.1 -> 1.3
-
-sp_rename 'Region', 'Regions';
-
-ALTER TABLE Customers
-  ADD DateOfEstablishment DATETIME;

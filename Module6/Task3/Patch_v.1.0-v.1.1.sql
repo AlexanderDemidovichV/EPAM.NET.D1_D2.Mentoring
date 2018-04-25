@@ -1,3 +1,12 @@
+﻿-- 3
+
+-- 1.0 -> 1.1
+
+USE Northwind;
+
+IF NOT EXISTS (SELECT * FROM sys.objects 
+	WHERE OBJECT_ID = OBJECT_ID(N'dbo.CreditCard') AND TYPE IN (N'U'))
+BEGIN
 
 CREATE TABLE CreditCard   
 (  
@@ -7,7 +16,9 @@ CREATE TABLE CreditCard
     HolderLastName NVARCHAR(20) NOT NULL,
 	HolderFirstName NVARCHAR(10) NOT NULL,
 	HolderID INT NULL
+	CONSTRAINT FK_CreditCard_Employee FOREIGN KEY(HolderID)
+		REFERENCES Employees (EmployeeID)
 );  
 
-ALTER TABLE CreditCard  WITH NOCHECK ADD  CONSTRAINT FK_CreditCard_Employee FOREIGN KEY(HolderID)
-REFERENCES Employees (EmployeeID);
+END;
+

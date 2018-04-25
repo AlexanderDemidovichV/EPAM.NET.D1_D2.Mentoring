@@ -14,11 +14,11 @@ END;
 
 USE Northwind;
 
-IF NOT EXISTS (SELECT * FROM sys.objects 
-	WHERE OBJECT_ID = OBJECT_ID(N'dbo.CreditCard') AND TYPE IN (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.columns  
+	WHERE Name = 'DateOfEstablishment' AND OBJECT_ID = OBJECT_ID(N'dbo.Customers'))
 BEGIN
 
 ALTER TABLE Customers
-  ADD DateOfEstablishment DATETIME;
+  ADD DateOfEstablishment DATE NULL;
 
 END;

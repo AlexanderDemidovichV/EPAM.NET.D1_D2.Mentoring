@@ -1,0 +1,10 @@
+4/25/2018 2:59:06 PM	This log contains information about the import schema operation into project 'Northwind' on computer 'EPBYMINW5083' by user 'Aliaksandr_Dzemidovi'.
+4/25/2018 2:59:06 PM	Deserializing model
+4/25/2018 2:59:07 PM	Resolving model
+4/25/2018 2:59:07 PM	Visiting imported model for types
+4/25/2018 2:59:07 PM	Scanning project for duplicate elements
+4/25/2018 2:59:07 PM	Finished duplicate element processing
+4/25/2018 2:59:08 PM	Processing extra files
+4/25/2018 2:59:08 PM	Finished importing Data-tier Application file.
+4/25/2018 2:59:08 PM	A summary of the import was saved to the following location: c:\Users\Aliaksandr_Dzemidovi\Documents\Mentoring_D1_D2\Module6\Northwind\Northwind\Import Schema Logs\Northwind_20180425115906.log
+4/25/2018 2:59:08 PM	Click Finish to continue...

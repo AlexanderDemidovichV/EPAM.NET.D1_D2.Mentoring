@@ -18,8 +18,8 @@ namespace MongoDBDemo
             var db = client.GetDatabase("Demo");
             var col = db.GetCollection<Book>("Books");
 
-            var id = new ObjectId("5aeb4b91013d041414d95fe9");
-            var books = col.Find(b => b.Id == id).Limit(5).ToListAsync().Result;
+            //var id = new ObjectId("5aeb4b91013d041414d95fe9");
+            //var books = col.Find(b => b.Id == id).Limit(5).ToListAsync().Result;
 
             #region Init
 
@@ -62,26 +62,26 @@ namespace MongoDBDemo
 
             //
 
-            var booksWithCountMoreThanOne = col.Find(b => b.Count > 1).ToListAsync().Result;
+            var booksWithCountMoreThanOne = col.Find(b => b.Count > 1).ToList();
             var result1 = booksWithCountMoreThanOne.Select(b => new {name = b.Name});
             foreach (var book in result1) {
                 Console.WriteLine(book.name);
             }
 
             Console.WriteLine();
-            var result2 = col.Find(b => b.Count > 1).SortBy(b => b.Name).ToListAsync().Result;
+            var result2 = col.Find(b => b.Count > 1).SortBy(b => b.Name).ToList();
             foreach (var book in result2) {
                 Console.WriteLine(book.Name);
             }
 
             Console.WriteLine();
-            var result3 = col.Find(b => b.Count > 1).Limit(3).ToListAsync().Result;
+            var result3 = col.Find(b => b.Count > 1).Limit(3).ToList();
             foreach (var book in result3) {
                 Console.WriteLine(book.Name);
             }
 
             Console.WriteLine();
-            var result4 = col.Find(b => b.Count > 1).ToListAsync().Result.Aggregate(0, (x, y) => x + y.Count);
+            var result4 = col.Find(b => b.Count > 1).ToList().Aggregate(0, (x, y) => x + y.Count);
             Console.WriteLine(result4);
 
             Console.WriteLine();
@@ -93,13 +93,13 @@ namespace MongoDBDemo
             Console.WriteLine(result3_1_2.Name);
 
             Console.WriteLine();
-            var result44 = col.DistinctAsync<string>("Author", new BsonDocument()).Result.ToList();
+            var result44 = col.Distinct<string>("Author", new BsonDocument()).ToList();
             foreach (var author in result44) {
                 Console.WriteLine(author);
             }
 
             Console.WriteLine();
-            var result5 = col.Find(b => b.Author == null).ToListAsync().Result;
+            var result5 = col.Find(b => b.Author == null).ToList();
             foreach (var book in result5) {
                 Console.WriteLine(book.Name);
             }
@@ -107,7 +107,7 @@ namespace MongoDBDemo
             col.UpdateMany(FilterDefinition<Book>.Empty, Builders<Book>.Update.Inc(b => b.Count, 1));
 
 
-            var ttt = col.Find(Builders<Book>.Filter.Where(b => b.Genre.Any(g => g == "fantasy"))).ToListAsync().Result;
+            var ttt = col.Find(Builders<Book>.Filter.Where(b => b.Genre.Any(g => g == "fantasy"))).ToList();
 
             col.UpdateMany(Builders<Book>.Filter.Where(b => b.Genre.Any(g => g == "fantasy")), 
                 Builders<Book>.Update.AddToSet(b => b.Genre, "favority"));

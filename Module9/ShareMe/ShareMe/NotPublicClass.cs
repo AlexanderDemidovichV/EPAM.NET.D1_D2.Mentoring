@@ -1,0 +1,6 @@
+﻿namespace ShareMe
+{
+    class NotPublicClass
+    {
+    }
+}

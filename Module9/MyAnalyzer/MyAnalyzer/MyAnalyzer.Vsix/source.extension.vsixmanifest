@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="RoslynAnalyzer.7eb0ec0f-36f7-4c83-bbda-ea4295a8f698" Version="1.0" Language="en-US" Publisher="Aliaksandr_Dzemidovi"/>
-    <DisplayName>RoslynAnalyzer</DisplayName>
+    <Identity Id="MyAnalyzer.95defcd5-13fc-491e-9bb3-0ee257d35838" Version="1.0" Language="en-US" Publisher="Aliaksandr_Dzemidovi"/>
+    <DisplayName>MyAnalyzer</DisplayName>
     <Description xml:space="preserve">This is a sample diagnostic extension for the .NET Compiler Platform ("Roslyn").</Description>
   </Metadata>
   <Installation>
@@ -12,8 +12,8 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="RoslynAnalyzer" Path="|RoslynAnalyzer|"/>
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="RoslynAnalyzer" Path="|RoslynAnalyzer|"/>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="MyAnalyzer" Path="|MyAnalyzer|"/>
+    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="MyAnalyzer" Path="|MyAnalyzer|"/>
   </Assets>
   <Prerequisites>
     <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" DisplayName="Visual Studio core editor" />

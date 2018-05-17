@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAnalyzer", "MyAnalyzer\MyAnalyzer\MyAnalyzer.csproj", "{CFAA84EA-C430-4C05-8883-0CBB9AE2207D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAnalyzer.Vsix", "MyAnalyzer\MyAnalyzer.Vsix\MyAnalyzer.Vsix.csproj", "{43B44379-B2DA-477B-9831-B8518AAB2F0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFAA84EA-C430-4C05-8883-0CBB9AE2207D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFAA84EA-C430-4C05-8883-0CBB9AE2207D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFAA84EA-C430-4C05-8883-0CBB9AE2207D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFAA84EA-C430-4C05-8883-0CBB9AE2207D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43B44379-B2DA-477B-9831-B8518AAB2F0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43B44379-B2DA-477B-9831-B8518AAB2F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43B44379-B2DA-477B-9831-B8518AAB2F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43B44379-B2DA-477B-9831-B8518AAB2F0A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D63392D7-81C1-40B0-AEA5-0FD8CA75AAA4}
+	EndGlobalSection
+EndGlobal

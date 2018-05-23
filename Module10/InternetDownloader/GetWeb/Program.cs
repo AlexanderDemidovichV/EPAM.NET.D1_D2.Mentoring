@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using InternetDownloader;
 
 namespace GetWeb
@@ -11,7 +7,17 @@ namespace GetWeb
     {
         static void Main(string[] args)
         {
-            Class1.Met();
+            
+            var down = new InternetDownloader.InternetDownloader(
+                "http://www.google.com",
+                @"d:\",
+                1,
+                InternetDownloaderOption.WithoutConstraints,
+                new string[0]);
+
+            down.DownloadContent();
+
+            Console.ReadKey();
         }
     }
 }

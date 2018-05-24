@@ -42,8 +42,9 @@ namespace InternetDownloader
                 return;
             }
 
+            var document = new HtmlDocument();
             var url = new Uri(startUrl);
-            var document = LoadHtmlDocument(url);
+            LoadHtmlDocument(url, document);
 
             string pathString = Path.Combine(folder, GetDirectoryName(startUrl));
             if (!Directory.Exists(pathString)) {
@@ -78,11 +79,8 @@ namespace InternetDownloader
             }
         }
 
-        private HtmlDocument LoadHtmlDocument(Uri url)
+        private void LoadHtmlDocument(Uri url, HtmlDocument document)
         {
-            var document = new HtmlDocument();
-            
-
             using (HttpClient client = new HttpClient()) {
                 var response =
                     client.GetAsync(url.AbsoluteUri).Result;
@@ -99,7 +97,6 @@ namespace InternetDownloader
 
                 document.Save(Path.Combine(storagePath, "index.html"));
             }
-            return document;
         }
     }
 }

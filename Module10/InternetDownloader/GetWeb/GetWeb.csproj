@@ -72,6 +72,10 @@
       <Project>{2E3DE927-8522-439C-9FF7-4296CCE7B109}</Project>
       <Name>LogAdapter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogProvider\LogProvider.csproj">
+      <Project>{898170dd-dfc6-44e2-a13e-6f729c1ab012}</Project>
+      <Name>LogProvider</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

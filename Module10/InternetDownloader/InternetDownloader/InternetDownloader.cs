@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using HtmlAgilityPack;
 using LogAdapter;
-using LogProvider;
 
 namespace InternetDownloader
 {
     public class InternetDownloader
     {
-        private readonly ILogger logger = NLogProvider.GetLogger("NLog",
-            CultureInfo.CurrentCulture);
+        private readonly ILogger logger;
 
         private const int pathLimit = 70;
         private readonly string startUrl;
@@ -21,11 +18,12 @@ namespace InternetDownloader
         private readonly InternetDownloaderOption option;
         private readonly string[] extensionConstraints;
 
-        public InternetDownloader(string startUrl, string storagePath,
+        public InternetDownloader(ILogger logger, string startUrl, string storagePath,
             int nestLevelLimit, 
             InternetDownloaderOption option, 
             string[] extensionConstraints)
         {
+            this.logger = logger;
             this.startUrl = startUrl;
             this.storagePath = storagePath;
             this.nestLevelLimit = nestLevelLimit;
@@ -36,7 +34,7 @@ namespace InternetDownloader
         public void DownloadContent()
         {
             DownloadContent(startUrl, 0, storagePath);
-        } 
+        }
 
         public void DownloadContent(string startUrl, int level, string folder)
         {
@@ -44,36 +42,22 @@ namespace InternetDownloader
                 return;
             }
 
-            var document = new HtmlDocument();
             var url = new Uri(startUrl);
-            using (HttpClient client = new HttpClient()) {
-                var response =
-                    client.GetAsync(url.AbsoluteUri).Result;
-
-                response.EnsureSuccessStatusCode();
-
-                using (var stream = response.Content.ReadAsStreamAsync().Result) {
-                    document.Load(stream, Encoding.UTF8);
-                }
-
-                document.Save(Path.Combine(storagePath, "index.html"));
-            }
+            var document = LoadHtmlDocument(url);
 
             string pathString = Path.Combine(folder, GetDirectoryName(startUrl));
             if (!Directory.Exists(pathString)) {
                Directory.CreateDirectory(pathString);
             }
 
-            var linkService = new LinkService(document.DocumentNode, pathString, RemoveParamsFromUrl(url.AbsoluteUri), 
+            var linkService = new LinkService(document.DocumentNode, pathString, url.AbsoluteUri, 
                 extensionConstraints, level, nestLevelLimit, logger, option);
             var linkList = linkService.Search();
 
             document.Save(Path.Combine(pathString, "index.html"));
 
-            logger?.Info("Links:");
-            foreach (var link in linkList)
-            {
-                logger?.Info(link);
+            foreach (var link in linkList) {
+                logger.Info(link);
                 DownloadContent(link, level + 1, pathString);
             }
         }
@@ -92,22 +76,30 @@ namespace InternetDownloader
             } catch (UriFormatException) {
                 throw new InternetDownloaderException("Uri format problems");
             }
-
         }
 
-        public static string RemoveParamsFromUrl(string url)
+        private HtmlDocument LoadHtmlDocument(Uri url)
         {
-            if (url == null)
-                throw new InternetDownloaderException($"Argument null: {nameof(url)}");
+            var document = new HtmlDocument();
+            
 
-            var indexOfParams = url.IndexOf('?');
-            if (indexOfParams > 0){
-                url = url.Substring(0, indexOfParams);
+            using (HttpClient client = new HttpClient()) {
+                var response =
+                    client.GetAsync(url.AbsoluteUri).Result;
+
+                try {
+                    response.EnsureSuccessStatusCode();
+                } catch (HttpRequestException e){
+                    logger.Error(e.Message);
+                }
+
+                using (var stream = response.Content.ReadAsStreamAsync().Result) {
+                    document.Load(stream, Encoding.UTF8);
+                }
+
+                document.Save(Path.Combine(storagePath, "index.html"));
             }
-            var endOfPath = url.Length - 1;
-            while (endOfPath >= url.Length && url[endOfPath] == '/') 
-                endOfPath--;
-            return url.Substring(0, endOfPath + 1);
+            return document;
         }
     }
 }

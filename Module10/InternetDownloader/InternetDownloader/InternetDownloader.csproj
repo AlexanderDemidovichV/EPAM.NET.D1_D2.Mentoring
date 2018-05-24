@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileSaver.cs" />
     <Compile Include="InternetDownloader.cs" />
     <Compile Include="InternetDownloaderException.cs" />
     <Compile Include="InternetDownloaderOption.cs" />

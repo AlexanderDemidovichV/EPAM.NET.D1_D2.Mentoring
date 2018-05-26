@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Microsoft.Owin.Logging;
+using LogAdapter;
 using MvcMusicStore.Infastructure;
 using MvcMusicStore.Models;
 using PerformanceCounterHelper;
@@ -14,10 +14,10 @@ namespace MvcMusicStore.Controllers
         private readonly MusicStoreEntities _storeContext = new MusicStoreEntities();
         private readonly ILogger logger;
 
-        //public HomeController(ILogger logger)
-        //{
-        //    this.logger = logger;
-        //}
+        public HomeController(ILogger logger)
+        {
+            this.logger = logger;
+        }
         // GET: /Home/
         public async Task<ActionResult> Index()
         {
@@ -25,6 +25,7 @@ namespace MvcMusicStore.Controllers
             //{
             //    counterHelper.Increment(Counters.GoToHome);
             //}
+            logger.Info("Go to Home");
             CounterHelperService.Instance.Increment(Counters.GoToHome);
             return View(await _storeContext.Albums
                 .OrderByDescending(a => a.OrderDetails.Count())

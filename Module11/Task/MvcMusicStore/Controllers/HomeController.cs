@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using LogAdapter;
+using LogProvider;
 using MvcMusicStore.Infastructure;
 using MvcMusicStore.Models;
 using PerformanceCounterHelper;
@@ -21,10 +22,6 @@ namespace MvcMusicStore.Controllers
         // GET: /Home/
         public async Task<ActionResult> Index()
         {
-            //using (var counterHelper = PerformanceHelper.CreateCounterHelper<Counters>("Test project"))
-            //{
-            //    counterHelper.Increment(Counters.GoToHome);
-            //}
             logger.Info("Go to Home");
             CounterHelperService.Instance.Increment(Counters.GoToHome);
             return View(await _storeContext.Albums

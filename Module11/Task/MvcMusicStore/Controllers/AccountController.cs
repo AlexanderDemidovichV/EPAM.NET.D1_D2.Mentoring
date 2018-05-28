@@ -3,9 +3,12 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using MvcMusicStore.Infastructure;
 using MvcMusicStore.Models;
+using LogAdapter;
+using ILogger = LogAdapter.ILogger;
 
 namespace MvcMusicStore.Controllers
 {
@@ -24,9 +27,12 @@ namespace MvcMusicStore.Controllers
 
         private UserManager<ApplicationUser> _userManager;
 
-        public AccountController()
+        private ILogger logger;
+
+        public AccountController(ILogger logger)
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
+            this.logger = logger;
         }
 
         public AccountController(UserManager<ApplicationUser> userManager)
@@ -103,11 +109,13 @@ namespace MvcMusicStore.Controllers
                 {
                     await SignInAsync(user, false);
 
+                    logger.Info("Success LoginIn");
                     CounterHelperService.Instance.Increment(Counters.SuccessfulLogIn);
 
                     return RedirectToAction("Index", "Home");
                 }
 
+                logger.Error("LogIn Errors");
                 AddErrors(result);
             }
 
@@ -290,6 +298,7 @@ namespace MvcMusicStore.Controllers
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
+                    logger.Error("External Login Failure");
                     return View("ExternalLoginFailure");
                 }
 
@@ -323,6 +332,7 @@ namespace MvcMusicStore.Controllers
             AuthenticationManager.SignOut();
 
             CounterHelperService.Instance.Increment(Counters.SuccessfulLogOut);
+            logger.Debug("LogOut Success");
 
             return RedirectToAction("Index", "Home");
         }

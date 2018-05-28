@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Autofac;
 using Autofac.Integration.Mvc;
-using log4net.Core;
-using MvcMusicStore.Controllers;
-using MvcMusicStore.Infastructure;
-using LogAdapter;
-using LogProvider;
-using PerformanceCounterHelper;
-using WebGrease;
+using MvcMusicStore.App_Start;
 
 namespace MvcMusicStore
 {
@@ -21,9 +10,7 @@ namespace MvcMusicStore
     {
         protected void Application_Start()
         {
-            var builder = new ContainerBuilder();
-            builder.RegisterControllers(typeof(HomeController).Assembly);
-            builder.Register(f => Log4NetProvider.LogProvider("ForControllers")).As<LogAdapter.ILogger>();
+            var builder = AutofacTypeRegistration.CreateContainerBuilder();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(builder.Build()));
 

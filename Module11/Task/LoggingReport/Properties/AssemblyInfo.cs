@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LogProvider")]
+[assembly: AssemblyTitle("LoggingReport")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EPAM Systems")]
-[assembly: AssemblyProduct("LogProvider")]
+[assembly: AssemblyProduct("LoggingReport")]
 [assembly: AssemblyCopyright("Copyright © EPAM Systems 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("898170dd-dfc6-44e2-a13e-6f729c1ab012")]
+[assembly: Guid("f654fd74-7241-4683-8187-3b2d0a5a4e1c")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,6 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: log4net.Config.XmlConfigurator]
-//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CacheFibonacci.Interfaces
+﻿namespace CacheFibonacci.Interfaces
 {
     public interface IFibonacciCache
     {
+        int? Get(int key);
+
+        void Set(int key, int? value);
     }
 }

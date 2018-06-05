@@ -1,32 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using CacheFibonacci.Interfaces;
 
 namespace CacheFibonacci
 {
     public class FibonacciFactory: IFibonacciFactory
     {
-        public IEnumerable<long> GetFibonacciNumber()
+        public int GetFibonacciNumber(int index)
         {
-            yield return 1;
-            yield return 1;
+            if (index < 0)
+                throw new ArgumentException(nameof(index));
 
-            long previous  = 1;
-            long current = 1;
+            if (index == 0 || index == 1)
+                return 1;
 
-            while (true) {
-                long next;
+            int previous = 0;
+            int current = 1;
+            int result = 1;
 
-                try {
-                    next = unchecked(previous + current);
-                } catch (OverflowException) {
-                    yield break;
-                }
-
-                yield return next;
+            for (int i = 0; i < index; i++) {
+                result = checked(current + previous);
                 previous = current;
-                current = next;
+                current = result;
             }
+
+            return result;
         }
 
     }

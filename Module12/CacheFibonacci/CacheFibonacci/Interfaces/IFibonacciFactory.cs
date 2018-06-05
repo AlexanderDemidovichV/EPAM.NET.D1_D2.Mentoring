@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CacheFibonacci.Interfaces
+﻿namespace CacheFibonacci.Interfaces
 {
     public interface IFibonacciFactory
     {
-        IEnumerable<long> GetFibonacciNumber();
+        int GetFibonacciNumber(int index);
     }
 }

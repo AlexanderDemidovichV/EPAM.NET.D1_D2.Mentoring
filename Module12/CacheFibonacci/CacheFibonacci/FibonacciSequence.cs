@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CacheFibonacci.Interfaces;
 
 namespace CacheFibonacci
@@ -14,36 +10,22 @@ namespace CacheFibonacci
 
         public FibonacciSequence(IFibonacciFactory fibonacciFactory, IFibonacciCache fibonacciCache)
         {
-            if (fibonacciFactory == null)
-                throw new ArgumentNullException(nameof(fibonacciFactory));
-
-            if (fibonacciCache == null)
-                throw new ArgumentNullException(nameof(fibonacciCache));
-
-            this.fibonacciFactory = fibonacciFactory;
-            this.fibonacciCache = fibonacciCache;
+            this.fibonacciFactory = fibonacciFactory ?? throw new ArgumentNullException(nameof(fibonacciFactory));
+            this.fibonacciCache = fibonacciCache ?? throw new ArgumentNullException(nameof(fibonacciCache));
         }
 
-        public IEnumerable<long> GetFibonacciNumber()
+        public int? GetFibonacciNumber(int index)
         {
-            foreach (var number in fibonacciFactory.GetFibonacciNumber())
-            {
-                if (checkCache())
-                    setCache();
-                yield return number;
+            if (index < 1) 
+                throw new ArgumentException(nameof(index));
+
+            var number = fibonacciCache.Get(index);
+            if (!number.HasValue) {
+                number = fibonacciFactory.GetFibonacciNumber(index);
+                fibonacciCache.Set(index, number);
             }
-            
 
-        }
-
-        private bool checkCache()
-        {
-            return false;
-        }
-
-        private void setCache()
-        {
-            
+            return number;
         }
     }
 }

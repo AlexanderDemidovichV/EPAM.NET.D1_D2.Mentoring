@@ -2,8 +2,12 @@
 {
     public interface IFibonacciCache
     {
-        int? Get(int key);
+        int? Get(string key);
 
-        void Set(int key, int? value);
+        T Get<T>(string key);
+
+        void Set(string key, object value);
+
+        void Delete(string key);
     }
 }

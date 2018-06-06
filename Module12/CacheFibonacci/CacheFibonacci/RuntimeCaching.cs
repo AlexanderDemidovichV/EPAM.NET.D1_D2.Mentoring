@@ -5,16 +5,34 @@ namespace CacheFibonacci
 {
     public class RuntimeCaching: IFibonacciCache
     {
+        private readonly ObjectCache _cache;
+
         const string cacheKey = "Fibonacci_CacheKey_";
 
-        public int? Get(int key)
+        public RuntimeCaching()
         {
-            return MemoryCache.Default.Get(cacheKey + key) as int?;
+            _cache = MemoryCache.Default;
         }
 
-        public void Set(int key, int? value)
+        public int? Get(string key)
         {
-            MemoryCache.Default.Set(cacheKey + key, value, ObjectCache.InfiniteAbsoluteExpiration);
+            return _cache.Get(cacheKey + key) as int?;
+        }
+
+        public T Get<T>(string key)
+        {
+            var value = _cache.GetCacheItem(key)?.Value;
+            return (T)value;
+        }
+
+        public void Set(string key, object value)
+        {
+            _cache.Set(cacheKey + key, value, ObjectCache.InfiniteAbsoluteExpiration);
+        }
+
+        public void Delete(string key)
+        {
+            _cache.Remove(key);
         }
     }
 }

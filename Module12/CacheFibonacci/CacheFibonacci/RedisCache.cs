@@ -7,7 +7,7 @@ using StackExchange.Redis;
 
 namespace CacheFibonacci
 {
-    public class RedisCache: IFibonacciCache
+    public class RedisCache: IFibonacciCacheAsync
     {
         private const int RetryCount = 3;
 
@@ -52,16 +52,6 @@ namespace CacheFibonacci
                 });
 
             return result;
-        }
-
-        public int? Get(int key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Set(int key, int? value)
-        {
-            throw new NotImplementedException();
         }
     }
 }

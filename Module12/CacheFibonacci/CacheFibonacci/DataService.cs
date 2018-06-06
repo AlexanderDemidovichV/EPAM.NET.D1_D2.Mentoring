@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CacheFibonacci.Interfaces;
 
 namespace CacheFibonacci
 {
-    public class DataService<T>//: IFibonacciCacheAsync<T>
+    public class DataService<T>
     {
         private const string LastItemKey = "key";
 
-        private readonly IFibonacciCacheAsync<T> cacheService;
+        private readonly IFibonacciCacheAsync cacheService;
 
 
-        public DataService(IFibonacciCacheAsync<T> cacheService)
+        public DataService(IFibonacciCacheAsync cacheService)
         {
             this.cacheService = cacheService;
         }

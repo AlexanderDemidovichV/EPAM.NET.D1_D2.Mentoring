@@ -2,7 +2,7 @@
 
 namespace CacheFibonacci.Interfaces
 {
-    public interface IFibonacciCacheAsync<T>
+    public interface IFibonacciCacheAsync
     {
         Task AddAsync(string key, object value);
 

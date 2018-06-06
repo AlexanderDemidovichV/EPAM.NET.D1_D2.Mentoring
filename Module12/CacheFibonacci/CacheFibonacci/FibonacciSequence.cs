@@ -19,10 +19,10 @@ namespace CacheFibonacci
             if (index < 1) 
                 throw new ArgumentException(nameof(index));
 
-            var number = fibonacciCache.Get(index);
+            var number = fibonacciCache.Get(index.ToString());
             if (!number.HasValue) {
                 number = fibonacciFactory.GetFibonacciNumber(index);
-                fibonacciCache.Set(index, number);
+                fibonacciCache.Set(index.ToString(), number);
             }
 
             return number;

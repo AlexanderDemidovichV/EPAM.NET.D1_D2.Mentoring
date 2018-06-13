@@ -5,7 +5,6 @@ using System.Data.Entity.Core.Objects;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Task.DB;
-using Task.Infrastructure.MapperConfigurations;
 
 namespace Task.Infrastructure
 {
@@ -15,6 +14,14 @@ namespace Task.Infrastructure
         {
             if (ObjectContext.GetObjectType(type) == typeof(Order))
                 return typeof(Order);
+            if (ObjectContext.GetObjectType(type) == typeof(Customer))
+                return typeof(Customer);
+            if (ObjectContext.GetObjectType(type) == typeof(Shipper))
+                return typeof(Shipper);
+            if (ObjectContext.GetObjectType(type) == typeof(Order_Detail))
+                return typeof(Order_Detail);
+            if (ObjectContext.GetObjectType(type) == typeof(Employee))
+                return typeof(Employee);
 
             return type;
         }

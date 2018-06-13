@@ -80,7 +80,8 @@
     <Compile Include="DB\Supplier.cs" />
     <Compile Include="DB\Territory.cs" />
     <Compile Include="Infrastructure\DataContractSurrogate.cs" />
-    <Compile Include="Infrastructure\MapperConfigurations\MapperConfigurations.cs" />
+    <Compile Include="Infrastructure\MapperConfigurations.cs" />
+    <Compile Include="Infrastructure\OrderDetailSurrogate.cs" />
     <Compile Include="SerializationSolutions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelpers\SerializationTester.cs" />

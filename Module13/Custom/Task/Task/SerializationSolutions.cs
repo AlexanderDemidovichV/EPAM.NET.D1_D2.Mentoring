@@ -49,8 +49,19 @@ namespace Task
 		{
 			dbContext.Configuration.ProxyCreationEnabled = false;
 
-			var tester = new XmlDataContractSerializerTester<IEnumerable<Order_Detail>>(new NetDataContractSerializer(), true);
-			var orderDetails = dbContext.Order_Details.ToList();
+		    var selector = new SurrogateSelector();
+		    selector.AddSurrogate(typeof(Order_Detail),
+		        new StreamingContext(StreamingContextStates.All, dbContext),
+		        new OrderDetailSurrogate());
+
+		    var tester = new XmlDataContractSerializerTester<IEnumerable<Order_Detail>>(
+		        new NetDataContractSerializer
+		        {
+		            SurrogateSelector = selector,
+		            Context = new StreamingContext(StreamingContextStates.All, dbContext)
+		        },
+		        true);
+            var orderDetails = dbContext.Order_Details.ToList();
 
 			tester.SerializeAndDeserialize(orderDetails);
 		}

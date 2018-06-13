@@ -2,7 +2,7 @@
 using AutoMapper;
 using Task.DB;
 
-namespace Task.Infrastructure.MapperConfigurations
+namespace Task.Infrastructure
 {
     public static class MapperConfigurationsHelper
     {

@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Data.Entity.Core.Objects;
 using System.Reflection;
 using System.Runtime.Serialization;
-using AutoMapper;
 using Task.DB;
+using Task.Infrastructure.MapperConfigurations;
 
 namespace Task.Infrastructure
 {
@@ -19,14 +19,13 @@ namespace Task.Infrastructure
             return type;
         }
 
-        public object GetObjectToSerialize(object obj, Type targetType)
+        public object GetObjectToSerialize(dynamic obj, Type targetType)
         {
             var objType = obj.GetType();
             if (objType.Namespace == "System.Data.Entity.DynamicProxies") {
-                var destinationType = ObjectContext.GetObjectType(objType);
-                MapperConfiguration config = NorthwindEntityMapper.GetMapperConfiguration(objType, destinationType);
+                var config = MapperConfigurationsHelper.GetMapperConfiguration(obj);
                 var newObj = Activator.CreateInstance(targetType);
-                NorthwindEntityMapper.Map(obj, newObj, config);
+                MapperConfigurationsHelper.Map(obj, newObj, config);
                 
                 return newObj;
             }

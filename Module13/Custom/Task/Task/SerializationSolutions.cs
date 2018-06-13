@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Task.DB;
 using Task.TestHelpers;
 using System.Runtime.Serialization;
 using System.Linq;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
 using Task.Infrastructure;
 
 namespace Task

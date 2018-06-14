@@ -71,7 +71,7 @@ namespace Task
 		{
 			dbContext.Configuration.ProxyCreationEnabled = true;
 			dbContext.Configuration.LazyLoadingEnabled = true;
-		    var settings = new DataContractSerializerSettings()
+		    var settings = new DataContractSerializerSettings
 		    {
 		        DataContractSurrogate = new DataContractSurrogate()
             };

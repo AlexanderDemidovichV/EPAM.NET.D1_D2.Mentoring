@@ -30,7 +30,8 @@ namespace Task.Infrastructure
         {
             var objType = obj.GetType();
             if (objType.Namespace == "System.Data.Entity.DynamicProxies") {
-                var config = MapperConfigurationsHelper.GetMapperConfiguration(obj);
+                var destinationType = ObjectContext.GetObjectType(objType);
+                var config = MapperConfigurationsHelper.GetMapperConfiguration(obj, objType, destinationType);
                 var newObj = Activator.CreateInstance(targetType);
                 MapperConfigurationsHelper.Map(obj, newObj, config);
                 

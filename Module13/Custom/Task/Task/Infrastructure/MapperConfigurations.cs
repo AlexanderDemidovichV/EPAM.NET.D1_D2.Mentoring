@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Core.Objects;
+﻿using System;
+using System.Data.Entity.Core.Objects;
 using AutoMapper;
 using Task.DB;
 
@@ -15,10 +16,8 @@ namespace Task.Infrastructure
                 typeof(TSource), typeof(TDestination));
         }
 
-        public static MapperConfiguration GetMapperConfiguration(Customer obj)
+        public static MapperConfiguration GetMapperConfiguration(Customer obj, Type objType, Type destinationType)
         {
-            var objType = obj.GetType();
-            var destinationType = ObjectContext.GetObjectType(objType);
             return new MapperConfiguration(conf =>
             {
                 conf.CreateMap(objType, destinationType)
@@ -26,10 +25,8 @@ namespace Task.Infrastructure
                     .ForMember("CustomerDemographics", opt => opt.Ignore());
             });
         }
-        public static MapperConfiguration GetMapperConfiguration(Employee obj)
+        public static MapperConfiguration GetMapperConfiguration(Employee obj, Type objType, Type destinationType)
         {
-            var objType = obj.GetType();
-            var destinationType = ObjectContext.GetObjectType(objType);
             return new MapperConfiguration(conf =>
             {
                 conf.CreateMap(objType, destinationType)
@@ -40,10 +37,8 @@ namespace Task.Infrastructure
             });
         }
 
-        public static MapperConfiguration GetMapperConfiguration(Order_Detail obj)
+        public static MapperConfiguration GetMapperConfiguration(Order_Detail obj, Type objType, Type destinationType)
         {
-            var objType = obj.GetType();
-            var destinationType = ObjectContext.GetObjectType(objType);
             return new MapperConfiguration(conf =>
             {
                 conf.CreateMap(objType, destinationType)
@@ -52,10 +47,8 @@ namespace Task.Infrastructure
             });
         }
 
-        public static MapperConfiguration GetMapperConfiguration(Shipper obj)
+        public static MapperConfiguration GetMapperConfiguration(Shipper obj, Type objType, Type destinationType)
         {
-            var objType = obj.GetType();
-            var destinationType = ObjectContext.GetObjectType(objType);
             return new MapperConfiguration(conf =>
             {
                 conf.CreateMap(objType, destinationType)
@@ -63,10 +56,8 @@ namespace Task.Infrastructure
             });
         }
 
-        public static MapperConfiguration GetMapperConfiguration(object obj)
+        public static MapperConfiguration GetMapperConfiguration(object obj, Type objType, Type destinationType)
         {
-            var objType = obj.GetType();
-            var destinationType = ObjectContext.GetObjectType(objType);
             return new MapperConfiguration(conf =>
             {
                 conf.CreateMap(objType, destinationType);

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
+﻿using System.Data.Entity.Infrastructure;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Task.DB;
 
 namespace Task.Infrastructure
